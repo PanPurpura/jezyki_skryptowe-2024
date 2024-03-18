@@ -1,6 +1,7 @@
 #!/bin/bash
 
 board=( "0", "0", "0", "0", "0", "0", "0", "0", "0")
+tPlayer="X"
 
 function write_board
 {
@@ -77,10 +78,37 @@ function start_info {
         echo "The game start now"
         echo
 	echo "Board has 9 fields, choose number from 1 to 9"
+        echo "s - save, l - load, e - exit"
 	echo
         echo "X start the game"
 
         write_board
+}
+
+function load 
+{
+        file="zapis.txt"
+        i=1
+        while read line; do
+        if [ $i -eq 1 ];
+        then
+           tPlayer=$line
+           i=$[i+1]
+           continue
+        fi
+        board[i-2]=$line
+        i=$[i+1]
+        done < $file
+}
+
+function save
+{
+ echo "$tPlayer" > "zapis.txt"
+ x=0;
+ while [ $x -lt 9 ]; do
+ echo "${board[$[x]]/,/}" >> "zapis.txt"
+ x=$[x+1]
+ done
 }
 
 function player_vs_player
@@ -89,9 +117,9 @@ function player_vs_player
 
  while true; do
 
-  player "X"
+  player $tPlayer
 
-  player "O"
+  player $tPlayer
 
  done
 }
@@ -103,6 +131,23 @@ function player() {
    echo "$@ turn"
    echo "Choose number from 1 to 9:"
    read x
+    if [ $x == "s" ];
+    then
+        save
+        echo "Game saved"
+        continue
+    elif [ $x == "l" ];
+    then
+        load
+        echo "Game loaded"
+        write_board
+        break;
+    elif [ $x == "e" ];
+    then
+        echo "Exit the game"
+        sleep 2
+        exit 0
+    fi
     if [ $x -ge 1 ] && [ $x -le 9 ];
     then
      if [ ${board[$[x-1]]/,/} == "0" ];
@@ -110,6 +155,13 @@ function player() {
       board[$[x-1]]="$@"
       write_board
       check_win_draw
+      if [ $tPlayer == "X" ];
+      then
+        tPlayer="O"
+      elif [ $tPlayer == "O" ];
+      then
+        tPlayer="X"
+      fi
       break
      fi
      echo "This field is already filled, try again"

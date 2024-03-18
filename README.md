@@ -9,7 +9,7 @@
 
 :white_check_mark: 4.0 - Pozwala na zapis i odtwarzanie przerwanej gry (save game) - [commit 2](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/d25df466587d9a3ec08edbb23994132b5cd4de0a)
 
-:white_check_mark: 5.0 - Pozwala na grę z komputerem - [commit 3](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/cbc83fe95bfe8f4500327b99caf56eaefbe03c25)
+:white_check_mark: 5.0 - Pozwala na grę z komputerem - [commit 3](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/78df419b71fa992e70cf27183428f5ae0d880f43)
 
 Kod: [zadanie_1](Zadanie_1/)
 

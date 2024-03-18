@@ -124,6 +124,19 @@ function player_vs_player
  done
 }
 
+function player_vs_PC {
+
+ start_info
+
+ while true; do
+                
+  player $tPlayer
+
+  pc
+
+ done
+}
+
 function player() {
   x=0;
   while true; do
@@ -173,9 +186,35 @@ function player() {
   done 
 }
 
+function pc() {
+        while true; do
+                echo "PC turn"
+                field=$[$[$RANDOM % 9]+1]
+                if [ ${board[$[field-1]]/,/} == "0" ]
+                then
+                 board[$[field-1]]="O"
+                 write_board
+                 check_win_draw
+                 tPlayer="X"
+                 break
+                fi
+        done
+}
+
 function game {
  while true; do
-        player_vs_player
+        x="u";
+        echo "p - play with the player, c - play with computer"
+        read x
+        if [ $x == "p" ];
+        then
+                player_vs_player
+        elif [ $x == "c" ];
+        then
+                player_vs_PC
+        fi
+
+        echo "You need to choose p or c!"
  done
 }
 

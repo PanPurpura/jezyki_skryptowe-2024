@@ -139,9 +139,10 @@ function player_vs_PC {
 
 function player() {
   x=0;
+  n=$@
   while true; do
 
-   echo "$@ turn"
+   echo "$n turn"
    echo "Choose number from 1 to 9:"
    read x
     if [ $x == "s" ];
@@ -152,9 +153,10 @@ function player() {
     elif [ $x == "l" ];
     then
         load
+        n=$tPlayer
         echo "Game loaded"
         write_board
-        break;
+        continue
     elif [ $x == "e" ];
     then
         echo "Exit the game"
@@ -165,7 +167,7 @@ function player() {
     then
      if [ ${board[$[x-1]]/,/} == "0" ];
      then
-      board[$[x-1]]="$@"
+      board[$[x-1]]="$n"
       write_board
       check_win_draw
       if [ $tPlayer == "X" ];
@@ -187,8 +189,8 @@ function player() {
 }
 
 function pc() {
+        echo "PC turn"
         while true; do
-                echo "PC turn"
                 field=$[$[$RANDOM % 9]+1]
                 if [ ${board[$[field-1]]/,/} == "0" ]
                 then
@@ -216,6 +218,10 @@ function game {
 
         echo "You need to choose p or c!"
  done
+}
+
+function change() {
+        tPlayer=$@
 }
 
 game

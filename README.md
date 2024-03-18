@@ -1,1 +1,5 @@
-# jezyki_skryptowe-2024
+# **jezyki_skryptowe-2024**
+<br>
+# Jarosław Such
+<br>
+

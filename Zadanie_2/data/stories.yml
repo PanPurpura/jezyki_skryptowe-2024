@@ -17,3 +17,13 @@ stories:
   - intent: check_opening_hours
   - action: action_get_opening_hours
 
+- story: check_menu
+  steps:
+  - intent: check_menu
+  - action: action_get_menu
+
+- story: check_if_open
+  steps:
+  - intent: check_is_open_now
+  - action: action_check_if_open
+

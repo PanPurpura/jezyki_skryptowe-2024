@@ -192,4 +192,20 @@ class ActionResults(Action):
 
         return[SlotSet('time', summary),SlotSet('orders', None)]
     
+class ActionDelivery(Action):
+    def name(self) -> Text:
+        return "action_delivery"
+    
+    async def run(
+            self, dispatcher, tracker: Tracker, domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        
+        address = tracker.get_slot('address')
+        time = tracker.get_slot('time')
+
+        dispatcher.utter_message(f"We will deliver to {address}, the needed time again is: {time}h")
+        dispatcher.utter_message(f"Thank you for choosing our restaurant")
+
+        return[SlotSet('address', None), SlotSet('time', None)]
+    
 

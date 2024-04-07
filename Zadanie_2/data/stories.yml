@@ -46,3 +46,17 @@ stories:
   - intent: list_of_orders
   - action: action_show_orders
 
+- story: denying_order_with_delivery
+  steps:
+  - intent: confirming_order
+  - action: action_results
+  - intent: address
+  - action: action_delivery
+
+- story: denying_order_without_delivery
+  steps:
+  - intent: confirming_order
+  - action: action_results
+  - intent: no_delivery
+  - action: utter_without_delivery
+

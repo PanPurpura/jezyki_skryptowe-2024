@@ -27,3 +27,22 @@ stories:
   - intent: check_is_open_now
   - action: action_check_if_open
 
+- story: order_without_conditions
+  steps:
+  - intent: order
+  - action: action_place_order
+  - intent: denying
+  - action: action_deny_cond
+
+- story: order_with_conditions
+  steps:
+  - intent: order
+  - action: action_place_order
+  - intent: additional_conditions
+  - action: action_handle_conditions
+
+- story: show_menu
+  steps:
+  - intent: list_of_orders
+  - action: action_show_orders
+

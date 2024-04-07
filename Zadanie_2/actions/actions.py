@@ -137,4 +137,59 @@ class ActionShowMenu(Action):
 
         return []
     
+class ActionDenyCond(Action):
+        def name(self) -> Text:
+            return "action_deny_cond"
+        
+        async def run(
+                self, dispatcher, tracker: Tracker, domain: Dict[Text, Any],
+        ) -> List[Dict[Text, Any]]:
+            
+            orders_ = tracker.get_slot('orders') or []
+            orders_.append(tracker.get_slot('item'))
+
+            dispatcher.utter_message(f"Adding your order to the list")
+            dispatcher.utter_message(f"Do you want to place another order?")
+            
+            return [SlotSet('item', None), SlotSet('orders', orders_)]
+        
+class ActionResults(Action):
+    def name(self) -> Text:
+        return "action_results"
+    
+    async def run(
+            self, dispatcher, tracker: Tracker, domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        
+        file = open('actions/menu.json')
+        menu = json.load(file)
+        
+        listOfOrders = tracker.get_slot('orders') or []
+
+        if(len(listOfOrders) == 0):
+            dispatcher.utter_message(f"The list is empty!")
+            return []
+
+        summary = 0
+        price = 0
+        list = ""
+        for food in listOfOrders:
+            print(food)
+            list += f"{food},\n"
+            first = food.split(',')
+            for item in menu['items']:
+                if item['name'] == first[0]:
+                    summary += item['preparation_time']
+                    price += item['price']
+                    break
+
+        
+        dispatcher.utter_message(text=f"Here is your orders: ")
+        dispatcher.utter_message(text=f"{list}")
+        dispatcher.utter_message(text=f"The preparation time is: {summary}")
+        dispatcher.utter_message(text=f"Full price is: {price}")
+        dispatcher.utter_message(f"Do you want delivery?")
+
+        return[SlotSet('time', summary),SlotSet('orders', None)]
+    
 

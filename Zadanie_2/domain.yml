@@ -1,0 +1,109 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - confirming_order
+  - what_can_do
+  - check_opening_hours
+  - check_menu
+  - check_is_open_now
+  - order
+  - confirming
+  - denying
+  - additional_conditions
+  - list_of_orders
+  - address
+  - no_delivery
+
+entities:
+    - item
+    - new_item
+    - address
+    - quantity
+    - orders
+    - time
+
+slots:
+ quantity:
+  type: text
+  influence_conversation: false
+  mappings:
+   - type: from_entity
+     entity: quantity
+
+ item:
+  type: text
+  influence_conversation: false
+  mappings:
+   - type: from_entity
+     entity: item
+    
+ new_item:
+  type: text
+  influence_conversation: false
+  mappings:
+   - type: from_entity
+     entity: new_item
+    
+ address:
+  type: text
+  influence_conversation: false
+  mappings:
+   - type: from_entity
+     entity: address
+
+ orders:
+  type: list
+  mappings:
+   - type: custom
+
+ time:
+  type: float
+  mappings:
+   - type: custom
+
+responses:
+  utter_greet:
+  - text: "Hello what can i do for you?"
+  - text: "Hi, how can i help?"
+  - text: "Good morning, what do you need?"
+
+  utter_goodbye:
+  - text: "Bye"
+  - text: "Goodbye"
+  - text: "See you soon!"
+  
+  utter_what_can_do:
+  - text: |
+      I can provide you such actions like:
+      - order something from menu
+      - show opening hours
+      - tell if restaurant is open now
+      - show you menu
+  - text: |
+      You can ask about:
+      - actual restaurant menu
+      - ordering a meal with or without extra ingredients
+      - opening hours
+      - if restaurant is open now
+
+  utter_without_delivery:
+  - text: |
+      Thank you for choosing our restaurant! See you soon!
+
+actions:
+    - action_get_opening_hours
+    - action_get_menu
+    - action_check_if_open
+    - action_place_order
+    - action_show_orders
+    - action_handle_conditions
+    - action_results
+    - action_delivery
+    - action_deny_cond
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

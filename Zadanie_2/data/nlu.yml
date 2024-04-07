@@ -1,0 +1,153 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: confirming_order
+  examples: |
+    - that would be all
+    - that is all
+    - that is all of my orders
+
+- intent: what_can_do
+  examples: |
+    - what can i do
+    - tell me what options you have
+    - how can you help me
+    - what actions i can take
+    - what do you do
+    - what question i can ask
+    - how can you assist me
+    - what services do you provide
+    - how many things can you do
+    - what do you offer
+    - what are your functions
+
+- intent: check_opening_hours
+  examples: |
+    - what are your opening hours
+    - when do you open
+    - can you tell me opening hours
+    - can you tell me when are you open
+    - when restaurant is open
+    - can you show me when are you open
+
+- intent: check_menu
+  examples: |
+    - show me menu
+    - can you show me menu
+    - do you have a menu
+    - what i can eat here
+    - is there possibility to see your menu
+    - is there a menu i can view
+    - can you show me what is on the menu
+    - do you offer a menu
+    - is there menu i can look at
+    - can you provide me menu
+  
+- intent: check_is_open_now
+  examples: |
+    - are you open now
+    - can i order something now
+    - can i com right now
+    - are you accepting guests now
+    - can i come in now
+    - can i enter
+    - are you ready to take customers
+    - are you available
+
+- intent: order
+  examples: |
+    - i want to order a [Tiramisu](item)
+    - can you prepare [Lasagne](item) for me please
+    - i would like to order [Pizza](item)
+    - can i have [Hot-dog](item) please
+    - could i get [Spaghetti Carbonara](item)
+    - may i order a [Burger](item)
+    - can i have [Spaghetti Carbonara](item) if possible
+    - i want [Pizza](item)
+
+- intent: confirming
+  examples: |
+    - yes
+    - y
+    - sure
+    - of course
+    - yes i want to
+    - yes i do
+    - confirm
+    - yes i would like to
+
+- intent: denying
+  examples: |
+    - no
+    - n
+    - rather not
+    - not
+    - no thank you
+
+- intent: additional_conditions
+  examples: |
+    - yes, add [extra](quantity) [Onion](new_item) to my Burger please
+    - yes, can you put [more](quantity) [Cheese](new_item) on my Pizza?
+    - yes, i want Pizza [without](quantity) [Ham](new_item)
+    - yes, may i have [less](quantity) [Sauce](new_item) in my Hot-Dog?
+
+- intent: list_of_orders
+  examples: |
+    - can you show me my order
+    - show me my order
+    - display my order
+    - what did i ordered
+    - what is on my list
+
+- intent: address
+  examples: |
+    - yes, my address is [Chmieleniec 41](address)
+    - can you deliver to [Starowislna 2](address)
+    - [Kapelanka 23](address) deliver here please
+    - deliver to [Szwedzka 10](address)
+
+- intent: no_delivery
+  examples: |
+    - no, i will pick it up myself
+    - no
+    - no, thank you
+    - i will come myself
+    - no need for delivery, thank you

@@ -1,0 +1,19 @@
+version: "3.1"
+
+stories:
+
+- story: what i can do
+  steps:
+  - intent: what_can_do
+  - action: utter_what_can_do
+
+- story: greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: check_opening_hours
+  steps:
+  - intent: check_opening_hours
+  - action: action_get_opening_hours
+

@@ -1,6 +1,4 @@
 let height = 0
-/**
- */
 function battlements () {
     move(8, 6, -9)
     wall("no", 11, 0, 0, 1, "Smooth Stone Slab")
@@ -26,8 +24,6 @@ function insideDefences () {
     }
     builder.teleportToOrigin()
 }
-/**
- */
 function insideCastle () {
     move(5, 0, -6)
     wall("no", 10, 0, 0, 10, "Stone Bricks")
@@ -112,6 +108,32 @@ function wall (Direction: string, x: number, y: number, z: number, height: numbe
     builder.shift(x, y, z)
     builder.raiseWall(blocks.blockByName(material), height)
 }
+function insideStairs () {
+    move(7, 0, 1)
+    wall("no", 0, 0, -2, 1, "Smooth Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    move(1, 1, 0)
+    wall("no", 0, 0, -2, 1, "Smooth Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    move(1, 1, 0)
+    wall("no", 0, 0, -2, 1, "Smooth Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    move(1, 1, 0)
+    wall("no", 0, 0, -2, 1, "Smooth Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    move(0, 1, 1)
+    builder.place(SMOOTH_STONE_SLAB)
+    move(0, 0, -4)
+    builder.place(SMOOTH_STONE_SLAB)
+    move(0, 0, 3)
+    builder.mark()
+    move(-4, 0, -2)
+    builder.fill(AIR)
+}
 function stairs () {
     move(1, 0, -8)
     wall("no", 0, 0, 0, 1, "Smooth Stone Slab")
@@ -129,6 +151,25 @@ function setPosition (x: number, y: number, z: number) {
     move(x, y, z)
     builder.setOrigin()
 }
+function bridge () {
+    move(-9, -1, 1)
+    wall("no", 0, 0, -2, 1, "Double Stone Slab")
+    move(1, 1, 0)
+    wall("no", 0, 0, 2, 1, "Smooth Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, -2, 1, "Double Stone Slab")
+    move(1, 1, 2)
+    builder.mark()
+    move(2, 0, -2)
+    builder.fill(SMOOTH_STONE_SLAB)
+    move(1, -1, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    move(1, 0, 0)
+    wall("no", 0, 0, -2, 1, "Smooth Stone Slab")
+    move(1, -1, 0)
+    wall("no", 0, 0, 2, 1, "Double Stone Slab")
+    builder.teleportToOrigin()
+}
 function Spawn () {
     builder.teleportTo(pos(0, 0, 0))
     builder.move(FORWARD, 6)
@@ -139,6 +180,25 @@ function floor () {
     builder.mark()
     move(20, 0, -20)
     builder.fill(PLANKS_BIRCH)
+    builder.teleportToOrigin()
+}
+function moat () {
+    move(-6, -2, 16)
+    builder.mark()
+    move(2, 1, -32)
+    builder.fill(WATER)
+    move(30, -1, 0)
+    builder.mark()
+    move(-29, 1, 2)
+    builder.fill(WATER)
+    move(29, -1, 0)
+    builder.mark()
+    move(-2, 1, 30)
+    builder.fill(WATER)
+    move(-29, -1, 0)
+    builder.mark()
+    move(29, 1, -2)
+    builder.fill(WATER)
     builder.teleportToOrigin()
 }
 function move (x: number, y: number, z: number) {
@@ -175,4 +235,7 @@ player.onChat("Castle", function () {
     insideCastle()
     inside_floor_roof()
     insideDefences()
+    moat()
+    bridge()
+    insideStairs()
 })

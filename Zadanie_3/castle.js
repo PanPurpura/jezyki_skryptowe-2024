@@ -1,10 +1,11 @@
 let height = 0
 function battlements () {
-    move(8, 6, -9)
-    wall("no", 11, 0, 0, 1, "Smooth Stone Slab")
+    move(12, 6, -9)
+    wall("no", 7, 0, 0, 1, "Smooth Stone Slab")
     wall("left", 18, 0, 0, 1, "Smooth Stone Slab")
-    wall("left", 18, 0, 0, 1, "Smooth Stone Slab")
-    wall("left", 18, 0, 0, 1, "Smooth Stone Slab")
+    wall("left", 15, 0, 0, 1, "Smooth Stone Slab")
+    move(3, 0, 3)
+    wall("left", 12, 0, 0, 1, "Smooth Stone Slab")
     builder.turn(LEFT_TURN)
     builder.teleportToOrigin()
 }
@@ -133,9 +134,10 @@ function insideStairs () {
     builder.mark()
     move(-4, 0, -2)
     builder.fill(AIR)
+    builder.teleportToOrigin()
 }
 function stairs () {
-    move(1, 0, -8)
+    move(5, 0, -8)
     wall("no", 0, 0, 0, 1, "Smooth Stone Slab")
     move(0, 0, -1)
     height = 1
@@ -204,6 +206,19 @@ function moat () {
 function move (x: number, y: number, z: number) {
     builder.shift(x, y, z)
 }
+function towers (x: number, y: number, z: number) {
+    move(x, y, z)
+    wall("no", 3, 0, 0, 15, "Cobblestone")
+    wall("no", 0, 0, -3, 15, "Cobblestone")
+    wall("no", -3, 0, 0, 15, "Cobblestone")
+    wall("no", 0, 0, 3, 15, "Cobblestone")
+    move(-1, 14, 0)
+    wall("no", 0, 0, -4, 3, "Cobblestone")
+    wall("no", 5, 0, 0, 3, "Cobblestone")
+    wall("no", 0, 0, 5, 3, "Cobblestone")
+    wall("no", -5, 0, 0, 3, "Cobblestone")
+    builder.teleportToOrigin()
+}
 function defences () {
     move(0, 7, -10)
     for (let index = 0; index < 4; index++) {
@@ -228,8 +243,6 @@ player.onChat("Castle", function () {
     builder.teleportToOrigin()
     setPosition(0, 0, 3)
     Gate()
-    stairs()
-    battlements()
     floor()
     defences()
     insideCastle()
@@ -238,4 +251,9 @@ player.onChat("Castle", function () {
     moat()
     bridge()
     insideStairs()
+    towers(0, 0, -7)
+    towers(0, 0, 10)
+    stairs()
+    battlements()
 })
+

@@ -27,3 +27,17 @@ Kod: [zadanie_1](Zadanie_1/)
 
 Kod: [zadanie_2](Zadanie_2/)
 
+## **Zadanie 3**: JS: Zamek w Minecraft
+
+:white_check_mark: 3.0 - Prosty zamek wykorzystując minimum 5 różnych rodzajów bloków - [commit 1](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/602745ead7bc945cce6a613d3b26a28a971f3d7a)
+
+:white_check_mark: 3.5 - Posiada minimum 4 okna - [commit 2](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/30306d96d16151a2a17eb98545bc4b1433237b02)
+
+:white_check_mark: 4.0 - Posiada fosę oraz most - [commit 3](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/f9264ddc46efe9c00654ba6aca9605ab26549eec)
+
+:white_check_mark: 4.5 - Posiada bramę oraz minimum 2 wieże - [commit 4](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/6c0cc952e35ac708937f926078579478207fd528)
+
+:white_check_mark: 5.0 - Zamek ma minimum dwa poziomy (pietra), na które można wejść z zewnątrz - [commit 5](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/6c0cc952e35ac708937f926078579478207fd528)
+
+Kod: [zadanie_2](Zadanie_3/)
+

@@ -1,4 +1,6 @@
 let height = 0
+/**
+ */
 function battlements () {
     move(8, 6, -9)
     wall("no", 11, 0, 0, 1, "Smooth Stone Slab")
@@ -6,6 +8,89 @@ function battlements () {
     wall("left", 18, 0, 0, 1, "Smooth Stone Slab")
     wall("left", 18, 0, 0, 1, "Smooth Stone Slab")
     builder.turn(LEFT_TURN)
+    builder.teleportToOrigin()
+}
+function insideDefences () {
+    move(5, 10, -6)
+    for (let index = 0; index < 2; index++) {
+        for (let index = 0; index < 5; index++) {
+            builder.place(POLISHED_ANDESITE)
+            builder.move(FORWARD, 2)
+        }
+        builder.turn(LEFT_TURN)
+        for (let index = 0; index < 6; index++) {
+            builder.place(POLISHED_ANDESITE)
+            builder.move(FORWARD, 2)
+        }
+        builder.turn(LEFT_TURN)
+    }
+    builder.teleportToOrigin()
+}
+/**
+ */
+function insideCastle () {
+    move(5, 0, -6)
+    wall("no", 10, 0, 0, 10, "Stone Bricks")
+    wall("left", 12, 0, 0, 10, "Stone Bricks")
+    wall("left", 10, 0, 0, 10, "Stone Bricks")
+    wall("left", 12, 0, 0, 10, "Stone Bricks")
+    builder.turn(LEFT_TURN)
+    builder.teleportToOrigin()
+    move(5, 0, 1)
+    builder.mark()
+    move(0, 1, -2)
+    builder.fill(AIR)
+    move(0, 0, -2)
+    builder.mark()
+    move(0, 1, -2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(4, 0, -1)
+    builder.mark()
+    move(2, -1, 0)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(4, 0, 5)
+    builder.mark()
+    move(0, 1, 2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(-4, 0, 5)
+    builder.mark()
+    move(-2, -1, 0)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(-4, 0, -1)
+    builder.mark()
+    move(0, 1, -2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(0, 4, 0)
+    builder.mark()
+    move(0, 1, 2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(4, 0, 1)
+    builder.mark()
+    move(2, -1, 0)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(4, 0, -5)
+    builder.mark()
+    move(0, 1, -2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(-4, 0, -5)
+    builder.mark()
+    move(-2, -1, 0)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    move(-4, 0, 1)
+    builder.mark()
+    move(0, 1, 2)
+    builder.fill(WHITE_STAINED_GLASS_PANE)
+    builder.teleportToOrigin()
+}
+function inside_floor_roof () {
+    move(6, 4, 5)
+    builder.mark()
+    move(8, 0, -10)
+    builder.fill(PLANKS_BIRCH)
+    move(0, 5, 0)
+    builder.mark()
+    move(-8, 0, 10)
+    builder.fill(STONE_BRICKS)
     builder.teleportToOrigin()
 }
 function Gate () {
@@ -87,4 +172,7 @@ player.onChat("Castle", function () {
     battlements()
     floor()
     defences()
+    insideCastle()
+    inside_floor_roof()
+    insideDefences()
 })

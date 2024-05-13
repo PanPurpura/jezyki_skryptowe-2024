@@ -14,51 +14,9 @@ local pauseButtons = {}
 local font = nil
 
 function love.load()
-    --love.window.setMode(300, 435)
     love.window.setMode(270, 452)
     love.window.setTitle("Tetris")
     love.graphics.setBackgroundColor(0,0,0)
-
-    font = love.graphics.newFont(24)
-    table.insert(buttons, newButton(
-        "Start Game",
-        function()
-            states.inStartMenu = false
-            states.inGame = true
-        end
-    ))
-    table.insert(buttons, newButton(
-        "Load Game",
-        function()
-            print("Loading Game")
-        end
-    ))
-    table.insert(buttons, newButton(
-        "Exit",
-        function()
-            love.event.quit(0)
-        end
-    ))
-
-    table.insert(pauseButtons, newButton(
-        "Resume",
-        function()
-            states.inPause = false
-            states.inGame = true
-        end
-    ))
-    table.insert(pauseButtons, newButton(
-        "Save",
-        function()
-            
-        end
-    ))
-    table.insert(pauseButtons, newButton(
-        "Exit",
-        function()
-            love.event.quit(0)
-        end
-    ))
 
     scenes = {
         game = love.graphics.newCanvas(),
@@ -264,6 +222,47 @@ function love.load()
             }
         }
     }
+
+    font = love.graphics.newFont(24)
+    table.insert(buttons, newButton(
+        "Start Game",
+        function()
+            states.inStartMenu = false
+            states.inGame = true
+        end
+    ))
+    table.insert(buttons, newButton(
+        "Load Game",
+        load_game
+    ))
+    table.insert(buttons, newButton(
+        "Exit",
+        function()
+            love.event.quit(0)
+        end
+    ))
+
+    table.insert(pauseButtons, newButton(
+        "Resume",
+        function()
+            states.inPause = false
+            states.inGame = true
+        end
+    ))
+    table.insert(pauseButtons, newButton(
+        "Save",
+        save_game
+    ))
+    table.insert(pauseButtons, newButton(
+        "Load Game",
+        load_game
+    ))
+    table.insert(pauseButtons, newButton(
+        "Exit",
+        function()
+            love.event.quit(0)
+        end
+    ))
 
 end
 
@@ -491,27 +490,104 @@ function draw_board()
     love.graphics.setCanvas()
 end
 
+function save_game()
+    local file, err = io.open("savedGame.txt", 'w+')
+    if file then
+        for i=1, maxHeight do
+            for j=1, maxWidth do
+                file:write(tostring(board[i][j]).." ")
+            end
+            file:write("\n")
+        end
+
+        if current_block ~= nil then
+            for i=1, 4 do
+                for j=1, 4 do
+                    file:write(tostring(current_block[1][i][j]).." ")
+                end
+                file:write("\n")
+            end
+
+            file:write(tostring(current_block[1].color[1]).." ")
+            file:write(tostring(current_block[1].color[2]).." ")
+            file:write(tostring(current_block[1].color[3]))
+        end
+
+        file:write("\n")
+        file:write(tostring(startXpos).." ")
+        file:write(tostring(startYpos))
+        file:write("\n")
+        file:write(tostring(gen))
+
+    else
+        print("error", err)
+    end
+
+    file:close()
+end
+
+function convert_string_to_boolean(string)
+    if string == "true" then
+        return true
+    else
+        return false
+    end
+end
+
+function load_game()
+    local file, err = io.open("savedGame.txt", 'r')
+    local line_number = 1
+    local word_number = 1
+    local gen = nil
+    local shape_ = {}
+    if file then
+        for line in file:lines() do
+            local row = {}
+            for word in line:gmatch("%-?%w+") do
+                if line_number <= 29 then
+                    board[line_number][word_number] = tonumber(word)
+                elseif line_number >= 30 and line_number <= 33 then
+                    table.insert(row, convert_string_to_boolean(word))
+                elseif line_number == 34 then
+                    table.insert(row, tonumber(word))
+                elseif line_number == 35 and word_number == 1 then
+                    startXpos = tonumber(word)
+                elseif line_number == 35 and word_number == 2 then
+                    startYpos = tonumber(word)  
+                else
+                    gen = tonumber(word)
+                end
+                word_number = word_number+1        
+            end
+
+            if line_number >= 30 and line_number <= 33 then
+                table.insert(shape_, row)
+            elseif line_number == 34 then
+                shape_["color"] = row
+            end
+            line_number = line_number + 1
+            word_number = 1
+        end
+    else
+        print("error", err)
+    end
+    file:close()
+    current_block = {shape_, gen}
+    shape_choosed = true
+    draw_board()
+
+    states.inStartMenu = false
+    states.inPause = false
+    states.inGame = true
+end
+
 function choose_shape()
     return love.math.random(1, 7)
 end
 
 function call_shape()
     gen = choose_shape()
-    if gen == 1 then
-        return {shapes[1][1], gen}
-    elseif gen == 2 then
-        return {shapes[2][1], gen}
-    elseif gen == 3 then
-        return {shapes[3][1], gen}
-    elseif gen == 4 then
-        return {shapes[4][1], gen}
-    elseif gen == 5 then
-        return {shapes[5][1], gen}
-    elseif gen == 6 then
-        return {shapes[6][1], gen}
-    elseif gen == 7 then
-        return {shapes[7][1], gen}
-    end
+    return {shapes[gen][1], gen}
 end
 
 function move_wholeRow_down(rowNumber) 
@@ -651,10 +727,10 @@ end
 function love.draw() 
     if states.inGame == true then
         draw_info()
+        love.graphics.draw(scenes.game)
         if current_block ~= nil then
             draw_shape(startXpos, startYpos, current_block[1], current_block[1].color)
         end
-        love.graphics.draw(scenes.game)
     elseif states.inStartMenu == true then
         draw_menu(buttons, scenes.startMenu)
         love.graphics.draw(scenes.startMenu)

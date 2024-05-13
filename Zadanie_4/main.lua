@@ -43,9 +43,10 @@ function love.load()
     maxHeight = 29
     startXpos = 1
     startYpos = 9
-    stopTime = 0.5
+    stopTime = 0.25
     stopTime1 = 0.1
     rollTime = 0.25
+    isFlash = false
     shape_choosed = false
     rolltype = 2
     points = 0
@@ -398,6 +399,19 @@ function draw_info()
     love.graphics.setCanvas()
 end
 
+function draw_end_screen()
+    love.graphics.setCanvas(scenes.endGame)
+
+    local font = love.graphics.newFont(32)
+    local font2 = love.graphics.newFont(16)
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print("Game Over", font, 40, 150)
+    love.graphics.print("Your points: "..tostring(points), font2, 90, 200)
+
+    love.graphics.setCanvas()
+end
+
 function draw_menu(buttonsTable, canva)
     love.graphics.setCanvas(canva)
     local width_ = love.graphics.getWidth()
@@ -615,21 +629,28 @@ function check_is_full(rowNumber)
     return true
 end
 
-function erase_full_rows()
-    local num_of_rows = 0
-    local full = true
-    for i=1, maxHeight-1 do 
-        if num_of_rows == 4 then
-            break
+function flash(rowNumber, a)
+    love.graphics.setCanvas(scenes.game)
+        for j=2, maxWidth-1 do
+            local id = board[rowNumber][j]
+            local rgb = shapes[id][1].color
+            love.graphics.setColor(love.math.colorFromBytes(rgb[1], rgb[2], rgb[3], (a*255-0.5)))
+            love.graphics.rectangle("fill", j*15-30, rowNumber*15+17, 15, 15)
+            love.graphics.setLineWidth(2)
+            love.graphics.setColor(255, 255, 255, a)
+            love.graphics.rectangle("line", j*15-30, rowNumber*15+17, 15, 15)
         end
-        if check_is_full(i) == true then
-            move_wholeRow_down(i-1)
+    love.graphics.setCanvas()
+end
+
+function erase_full_rows(rows)
+    local num_of_rows = table.getn(rows)
+    for i=1, num_of_rows do 
+            move_wholeRow_down(rows[i]-1)
             love.graphics.setCanvas(scenes.game)
             love.graphics.setColor(0, 0, 0)
             love.graphics.rectangle("fill", 155, 6, 100, 15)
             love.graphics.setCanvas()
-            num_of_rows = num_of_rows + 1
-        end
     end
 
     if num_of_rows == 1 then
@@ -643,102 +664,176 @@ function erase_full_rows()
     end
 
     draw_board()
-    print("Actual points: "..points)
+end
+
+function fullRow()
+    local rows = {}
+    for i=1, maxHeight-1 do
+        if check_is_full(i) == true then
+            table.insert(rows, i)
+        end
+    end
+    if table.getn(rows) ~= 0 then
+        isFlash = true
+    end
+    return rows
 end
 
 function end_of_game()
     for j=2, maxWidth-1 do
         if board[1][j] ~= 0 then
-            print("Game Over!")
-            print("Your points: "..points)
-            love.event.quit(0)
+            draw_end_screen()
+            states.inGame = false
+            states.inEndGame = true
         end
     end
 end
 
+local checked = false
 function gameMechanism(dt_)
     if love.keyboard.isDown("p") then
         states.inGame = false
         states.inPause = true
     end
-
-    if shape_choosed == false then
-        end_of_game()
-        erase_full_rows()
-        current_block = call_shape()
-        shape_choosed = true
-    end
-
-    if stopTime < 0 then
-        if check_move_down(startXpos, startYpos, current_block[1]) == true then
-            erase_shape(startXpos, startYpos, current_block[1])
-            startXpos = startXpos + 1 
-        else
-            sounds.blip:play()
-            save_block(startXpos, startYpos, current_block[1], current_block[2])
-            shape_choosed = false
-            current_block = nil
-            startXpos = 1
-            startYpos = 9
-            draw_board()
+    end_of_game()
+    if checked == false then
+        rows = fullRow()
+        if table.getn(rows) ~= 0 then
+            checked = true
         end
-        stopTime = 0.5
     end
-    if stopTime1 < 0 and current_block ~= nil then
-        if love.keyboard.isDown("left") then
-            if check_left_side(startXpos, startYpos, current_block[1]) == true then
+
+    if isFlash == false then
+        if table.getn(rows) ~= 0 then
+            erase_full_rows(rows)
+            checked = false
+        end
+        if shape_choosed == false then
+            current_block = call_shape()
+            shape_choosed = true
+        end
+    
+        if stopTime < 0 then
+            if check_move_down(startXpos, startYpos, current_block[1]) == true then
                 erase_shape(startXpos, startYpos, current_block[1])
-                startYpos = startYpos - 1 
-                stopTime1 = 0.1
+                startXpos = startXpos + 1 
+            else
+                sounds.blip:play()
+                save_block(startXpos, startYpos, current_block[1], current_block[2])
+                shape_choosed = false
+                current_block = nil
+                startXpos = 1
+                startYpos = 9
+                draw_board()
+            end
+            stopTime = 0.25
+        end
+        if stopTime1 < 0 and current_block ~= nil then
+            if love.keyboard.isDown("left") then
+                if check_left_side(startXpos, startYpos, current_block[1]) == true then
+                    erase_shape(startXpos, startYpos, current_block[1])
+                    startYpos = startYpos - 1 
+                    stopTime1 = 0.1
+                end
+            end
+            if love.keyboard.isDown("right") then
+                if check_right_side(startXpos, startYpos, current_block[1]) == true then
+                    erase_shape(startXpos, startYpos, current_block[1])
+                    startYpos = startYpos + 1 
+                    stopTime1 = 0.1
+                end
             end
         end
-        if love.keyboard.isDown("right") then
-            if check_right_side(startXpos, startYpos, current_block[1]) == true then
+        if rollTime < 0 and current_block ~= nil then
+            if love.keyboard.isDown("r") then
+                g = current_block[2]
+                possibilities = shapes[g]
+                if rolltype > table.getn(possibilities) then
+                    rolltype = 1
+                end
                 erase_shape(startXpos, startYpos, current_block[1])
-                startYpos = startYpos + 1 
-                stopTime1 = 0.1
+                current_block = {possibilities[rolltype], g}
+                rolltype = rolltype + 1
+                rollTime = 0.25
             end
         end
+    
+        stopTime = stopTime - dt_
+        stopTime1 = stopTime1 - dt_
+        rollTime = rollTime - dt_
     end
-    if rollTime < 0 and current_block ~= nil then
-        if love.keyboard.isDown("r") then
-            g = current_block[2]
-            possibilities = shapes[g]
-            if rolltype > table.getn(possibilities) then
-                rolltype = 1
+end
+
+function love.touchpressed(id, x, y, dx, dy, pressure)
+    wWidth, wHeight = love.window.getDimensions()
+
+    if x > (startXpos-1)*15-30 and x < (startXpos-1)*15*4-30 and y > (startYpos-1)*15+17 and y < (startYpos-1)*15*4+17 then
+        if rollTime < 0 and current_block ~= nil then
+            if love.keyboard.isDown("r") then
+                g = current_block[2]
+                possibilities = shapes[g]
+                if rolltype > table.getn(possibilities) then
+                    rolltype = 1
+                end
+                erase_shape(startXpos, startYpos, current_block[1])
+                current_block = {possibilities[rolltype], g}
+                rolltype = rolltype + 1
+                rollTime = 0.25
             end
-            erase_shape(startXpos, startYpos, current_block[1])
-            current_block = {possibilities[rolltype], g}
-            rolltype = rolltype + 1
-            rollTime = 0.25
         end
     end
 
-    stopTime = stopTime - dt_
-    stopTime1 = stopTime1 - dt_
-    rollTime = rollTime - dt_
+
+    if x > 0 and x < wWidth/2 then
+        if stopTime1 < 0 and current_block ~= nil then
+                if check_left_side(startXpos, startYpos, current_block[1]) == true then
+                    erase_shape(startXpos, startYpos, current_block[1])
+                    startYpos = startYpos - 1 
+                    stopTime1 = 0.1
+                end
+        end
+    elseif x > wWidth/2 and x < wWidth then
+        if stopTime1 < 0 and current_block ~= nil then
+                if check_right_side(startXpos, startYpos, current_block[1]) == true then
+                    erase_shape(startXpos, startYpos, current_block[1])
+                    startYpos = startYpos + 1 
+                    stopTime1 = 0.1
+                end
+        end
+    end
 
 end
 
 function love.update(dt)
     if states.inGame == true then
         gameMechanism(dt)
-    elseif states.inStartMenu == true then
-
-    elseif states.inPause == true then
-    
-    elseif states.inEndGame == true then
-    
     end
 end
 
+local howMany = 100
+local endg = 200
 function love.draw() 
     if states.inGame == true then
         draw_info()
-        love.graphics.draw(scenes.game)
-        if current_block ~= nil then
-            draw_shape(startXpos, startYpos, current_block[1], current_block[1].color)
-        end
+        if isFlash == true then
+            local speed = 1
+            local a = math.abs(math.cos(love.timer.getTime() * speed % 2 * math.pi))
+            local rows = fullRow()
+            for j=1, table.getn(rows) do
+                flash(rows[j], a)
+            end
+            howMany = howMany - 1
+            love.graphics.draw(scenes.game)
+            if howMany == 0 then
+                isFlash = false
+                howMany = 100
+            end
+        else
+            love.graphics.draw(scenes.game)
+            if current_block ~= nil then
+                draw_shape(startXpos, startYpos, current_block[1], current_block[1].color)
+            end
+        end  
     elseif states.inStartMenu == true then
         draw_menu(buttons, scenes.startMenu)
         love.graphics.draw(scenes.startMenu)
@@ -746,6 +841,10 @@ function love.draw()
         draw_menu(pauseButtons, scenes.pause)
         love.graphics.draw(scenes.pause)
     elseif states.inEndGame == true then
-        print("inEndGame")
+        love.graphics.draw(scenes.endGame)
+        if endg == 0 then
+            love.event.quit(0)
+        end
+        endg = endg - 1
     end
 end

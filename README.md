@@ -41,3 +41,17 @@ Kod: [zadanie_2](Zadanie_2/)
 
 Kod: [zadanie_2](Zadanie_3/)
 
+## **Zadanie 4**: Tetris w Lua
+
+:white_check_mark: 3.0 - Podstawowa wersja desktopowa z obsługą na klawiaturze - minimum 4 rodzaje klocków - [commit 1]()
+
+:white_check_mark: 3.5 - Zapis i odczyt gier - [commit 2]()
+
+:white_check_mark: 4.0 - Dodanie efektów dźwiękowych przy akcjach - [commit 3]()
+
+:white_check_mark: 4.5 - Dodanie animacji przy zbijaniu klocków - [commit 4]()
+
+:x: 5.0 - Wersja na iOS lub Android z implementacją touch zamiast klawiatury
+
+Kod: [zadanie_2](Zadanie_4/)
+

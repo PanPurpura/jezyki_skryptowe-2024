@@ -39,19 +39,19 @@ Kod: [zadanie_2](Zadanie_2/)
 
 :white_check_mark: 5.0 - Zamek ma minimum dwa poziomy (pietra), na które można wejść z zewnątrz - [commit 5](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/6c0cc952e35ac708937f926078579478207fd528)
 
-Kod: [zadanie_2](Zadanie_3/)
+Kod: [zadanie_3](Zadanie_3/)
 
 ## **Zadanie 4**: Tetris w Lua
 
-:white_check_mark: 3.0 - Podstawowa wersja desktopowa z obsługą na klawiaturze - minimum 4 rodzaje klocków - [commit 1]()
+:white_check_mark: 3.0 - Podstawowa wersja desktopowa z obsługą na klawiaturze - minimum 4 rodzaje klocków - [commit 1](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/966889d2c5e704bdfe401573f46b1ab404f64527)
 
-:white_check_mark: 3.5 - Zapis i odczyt gier - [commit 2]()
+:white_check_mark: 3.5 - Zapis i odczyt gier - [commit 2](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/c923d5ef6d518e93b237cd01a4fe35a9d6111b84)
 
-:white_check_mark: 4.0 - Dodanie efektów dźwiękowych przy akcjach - [commit 3]()
+:white_check_mark: 4.0 - Dodanie efektów dźwiękowych przy akcjach - [commit 3](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/d93a858a3849addc0ac50bdf8eaf95ccd9e48471)
 
-:white_check_mark: 4.5 - Dodanie animacji przy zbijaniu klocków - [commit 4]()
+:white_check_mark: 4.5 - Dodanie animacji przy zbijaniu klocków - [commit 4](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/0e5e37e5164e5127855759d4a4aae788610094ba)
 
 :x: 5.0 - Wersja na iOS lub Android z implementacją touch zamiast klawiatury
 
-Kod: [zadanie_2](Zadanie_4/)
+Kod: [zadanie_4](Zadanie_4/)
 

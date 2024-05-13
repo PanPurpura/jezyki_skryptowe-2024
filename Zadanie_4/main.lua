@@ -18,6 +18,13 @@ function love.load()
     love.window.setTitle("Tetris")
     love.graphics.setBackgroundColor(0,0,0)
 
+    sounds = {}
+    sounds.blip = love.audio.newSource("sounds/blip.wav", "static")
+    sounds.music = love.audio.newSource("sounds/music.mp3", "stream")
+    sounds.music:setLooping(true)
+
+    sounds.music:play()
+
     scenes = {
         game = love.graphics.newCanvas(),
         startMenu = love.graphics.newCanvas(),
@@ -301,7 +308,6 @@ function check_move_down(x, y, shape)
     for i=1, 4 do
         for j=1, 4 do
             if shape[i][j] == true then
-               -- print("============")
                 if board[i+x-1+1][j+y-1] ~= 0 then
                     return false
                 end
@@ -668,6 +674,7 @@ function gameMechanism(dt_)
             erase_shape(startXpos, startYpos, current_block[1])
             startXpos = startXpos + 1 
         else
+            sounds.blip:play()
             save_block(startXpos, startYpos, current_block[1], current_block[2])
             shape_choosed = false
             current_block = nil
@@ -695,12 +702,13 @@ function gameMechanism(dt_)
     end
     if rollTime < 0 and current_block ~= nil then
         if love.keyboard.isDown("r") then
-            possibilities = shapes[gen]
+            g = current_block[2]
+            possibilities = shapes[g]
             if rolltype > table.getn(possibilities) then
                 rolltype = 1
             end
             erase_shape(startXpos, startYpos, current_block[1])
-            current_block = {possibilities[rolltype], gen}
+            current_block = {possibilities[rolltype], g}
             rolltype = rolltype + 1
             rollTime = 0.25
         end

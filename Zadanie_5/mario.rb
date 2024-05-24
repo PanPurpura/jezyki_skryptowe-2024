@@ -2,6 +2,8 @@ require 'ruby2d'
 require './character'
 require './spikes'
 require './door'
+require './looseScreen'
+require './coin'
 
 set title: "Mario2D"
 set background: "navy"
@@ -19,6 +21,8 @@ set borderless: false
 @spikes = Spikes.new(540, 667)
 @spikes1 = Spikes.new(720, 667)
 @door = Door.new(1285, 505)
+@coin = Coin.new(736, 567)
+@coin1 = Coin.new(558, 567)
 
 @tilesetBackgrounds = Ruby2D::Tileset.new('tilemap-backgrounds-24x24.png', spacing: 1, tile_width: 24, tile_height: 24, scale: 3)
 @tilesetMap = Ruby2D::Tileset.new('tilemap.png', spacing: 1, tile_width: 18, tile_height: 18, scale: 3)
@@ -121,14 +125,19 @@ end
 @spikes.draw
 @spikes1.draw
 @door.draw
-
+#@char.move(@worldHitboxes)
+@coin.draw
+@coin1.draw
 
 update do
+  #@char.end_game
   @char.playerGravity(@worldHitboxes)
   @char.change_move(@worldHitboxes)
   @char.move
   @spikes.modify_velocity(@char, @char.get_hitbox)
   @spikes1.modify_velocity(@char, @char.get_hitbox)
+  @coin.give_points(@char)
+  @coin1.give_points(@char)
   @door.next_lvl(@char.get_hitbox, @char)
 end
 

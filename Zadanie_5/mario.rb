@@ -2,20 +2,13 @@ require 'ruby2d'
 require './character'
 require './spikes'
 require './door'
-require './looseScreen'
 require './coin'
+require './enemy'
 
 set title: "Mario2D"
 set background: "navy"
-#set fullscreen: true
 set width: 1344, height: 720
 set borderless: false
-@states = [
-  @menu = true,
-  @game = false,
-  @winScreen = false,
-  @looseScreen = false
-]
 
 @char = Character.new
 @spikes = Spikes.new(540, 667)
@@ -23,10 +16,14 @@ set borderless: false
 @door = Door.new(1285, 505)
 @coin = Coin.new(736, 567)
 @coin1 = Coin.new(558, 567)
+@enemy = Enemy.new(1080, 505)
 
 @tilesetBackgrounds = Ruby2D::Tileset.new('tilemap-backgrounds-24x24.png', spacing: 1, tile_width: 24, tile_height: 24, scale: 3)
 @tilesetMap = Ruby2D::Tileset.new('tilemap.png', spacing: 1, tile_width: 18, tile_height: 18, scale: 3)
 @tilesetCharacter = Ruby2D::Tileset.new('tilemap-characters.png', spacing: 1, tile_width: 24, tile_height: 25, scale: 3)
+
+@tilesetMap.define_tile('fullHeart', 4, 2)
+@tilesetMap.define_tile('emptyHeart', 6, 2)
 
 @tilesetBackgrounds.define_tile('sky', 0, 0)
 @tilesetBackgrounds.define_tile('sky1', 0, 2)
@@ -105,6 +102,7 @@ end
 @floor.push({x: 358, y: 613})
 @floor.push({x: 900, y: 667})
 @floor.push({x: 954, y: 613})
+@floor.push({x: 954, y: 505})
 
 @tilesetBackgrounds.set_tile('sky', @coordsSky)
 @tilesetBackgrounds.set_tile('sky1', @coordsSky1)
@@ -114,6 +112,10 @@ end
 @tilesetBackgrounds.set_tile('ground4', @coordGround4)
 @tilesetMap.set_tile('floor1', @floor)
 
+@tilesetMap.set_tile('fullHeart', [ {x:20, y:20}, {x:70, y:20}, {x:120, y:20}])
+
+
+
 @worldHitboxes = []
 
 @i = 0
@@ -121,16 +123,34 @@ while @i < @floor.count
   @worldHitboxes.push(Square.new(x: @floor[@i][:x], y: @floor[@i][:y], color: [1, 0, 1, 0.4], size: 54))
   @i = @i + 1
 end
+
+def heart_display
+  @tilesetMap.clear_tiles
+  @tilesetMap.set_tile('floor1', @floor)
+  if @char.get_num_of_hearts == 3
+    @tilesetMap.set_tile('fullHeart', [ {x:20, y:20}, {x:70, y:20}, {x:120, y:20}])
+  elsif @char.get_num_of_hearts == 2
+    @tilesetMap.set_tile('fullHeart', [ {x:20, y:20}, {x:70, y:20} ])
+    @tilesetMap.set_tile('emptyHeart', [ {x:120, y:20} ])
+  elsif @char.get_num_of_hearts == 1
+    @tilesetMap.set_tile('fullHeart', [ {x:20, y:20} ])
+    @tilesetMap.set_tile('emptyHeart', [ {x:70, y:20}, {x:120, y:20} ])
+  elsif @char.get_num_of_hearts == 0
+    @tilesetMap.set_tile('emptyHeart', [ {x:20, y:20}, {x:70, y:20}, {x:120, y:20}])
+  end
+end
+
+
 @char.draw
 @spikes.draw
 @spikes1.draw
 @door.draw
-#@char.move(@worldHitboxes)
 @coin.draw
 @coin1.draw
+@enemy.draw
 
 update do
-  #@char.end_game
+  heart_display
   @char.playerGravity(@worldHitboxes)
   @char.change_move(@worldHitboxes)
   @char.move
@@ -139,6 +159,7 @@ update do
   @coin.give_points(@char)
   @coin1.give_points(@char)
   @door.next_lvl(@char.get_hitbox, @char)
+  @enemy.move(@worldHitboxes, @char)
 end
 
 show

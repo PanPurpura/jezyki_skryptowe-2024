@@ -55,3 +55,16 @@ Kod: [zadanie_3](Zadanie_3/)
 
 Kod: [zadanie_4](Zadanie_4/)
 
+## **Zadanie 5**: Mario w Ruby2D
+
+:white_check_mark: 3.0 - Należy stworzyć jeden poziom z przeszkodami oraz dziurami w które można wpaść i zginąć - [commit 1](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/867ebafdc0e8b3f3763a79a1bd0c67e08444100e)
+
+:white_check_mark: 3.5 - Należy dodać opcję zbierania punktów - [commit 2](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/71a3c70c7a15bba549cdeafb9c151a4f51f5d4f2)
+
+:white_check_mark: 4.0 - Należy dodać przeciwników, których można zabić oraz 3 życia - [commit 3](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/f8b56406c09a589cc76bf367c21a5b8bab11109d)
+
+:white_check_mark: 4.5 - Ładowanie poziomów z pliku - [commit 4](https://github.com/PanPurpura/jezyki_skryptowe-2024/commit/703f08cf3ed5c11fd1e23ee5b14bc40ae10c01d2)
+
+:x: 5.0 - Generator poziomów
+
+Kod: [zadanie_4](Zadanie_5/)

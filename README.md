@@ -67,4 +67,4 @@ Kod: [zadanie_4](Zadanie_4/)
 
 :x: 5.0 - Generator poziomów
 
-Kod: [zadanie_4](Zadanie_5/)
+Kod: [zadanie_5](Zadanie_5/)
